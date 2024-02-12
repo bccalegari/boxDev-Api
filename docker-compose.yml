@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: boxdev_db
+    env_file: ./.env
+    expose: [3306]
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=boxDev
+      - MYSQL_PORT=3306
+    ports:
+      - "$DB_LOCAL_PORT:3306" 
+    networks:
+      boxDev_network:
+        aliases:
+            - db
+    volumes:
+      - ./database/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      
+  app:
+    build: ./api
+    image: node:18-alpine
+    container_name: boxdev_app
+    command: npm run dev
+    working_dir: /api
+    restart: on-failure
+    env_file: ./.env
+    expose: [8000]
+    environment:
+      - PORT=8000
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=boxDev
+      - DB_PORT=3306
+    ports:
+      - "$APP_LOCAL_PORT:8000" 
+    networks:
+      boxDev_network:
+        aliases:
+            - app
+    volumes:
+      - ./api:/api:cached
+    depends_on:
+      db:
+        condition: service_started
+
+networks:
+  boxDev_network:
+    name: boxDev_network
+    driver: bridge
+
+volumes: 
+  db:
+    name: boxDev_database

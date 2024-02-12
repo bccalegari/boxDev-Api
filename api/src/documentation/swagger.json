@@ -1,0 +1,21 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "boxDev-Api",
+        "description": "File Management REST API <br><br> Repository: [bccalegari/boxDev-Api](https://github.com/bccalegari/boxDev-Api) <br>",
+        "contact": {
+            "email": "brunocostacallegari@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/bccalegari/boxDev-Api/blob/main/LICENSE.md"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://localhost:8080/v1",
+            "description": ""
+        }
+    ]
+}
