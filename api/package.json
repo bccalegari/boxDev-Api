@@ -6,7 +6,18 @@
     "scripts": {
       "lint": "eslint --fix .",
       "dev": "npm install && nodemon server.js",
-      "start": "node server.js"
+      "start": "node server.js",
+      "tests": "npm rebuild && export APP_ENV=test && jest --detectOpenHandles --silent --verbose --runInBand",
+      "tests:coverage": "npm rebuild && export APP_ENV=test && jest --detectOpenHandles --silent --coverage",
+      "tests:integration": "npm rebuild && export APP_ENV=test && jest --detectOpenHandles  --silent --verbose --runInBand integration/",
+      "tests:integration:args": "npm rebuild && export APP_ENV=test && jest --detectOpenHandles  --silent --verbose --runInBand /integration/--test=$npm_config_name"
+    },
+    "jest": {
+      "verbose": true,
+      "setupFilesAfterEnv": [
+        "jest-extended/all",
+        "./test/config/setupJest.js"
+      ]
     },
     "keywords": [],
     "author": "",

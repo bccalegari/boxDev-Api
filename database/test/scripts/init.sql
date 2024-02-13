@@ -1,9 +1,9 @@
 -- -----------------------------------------------------
--- Schema boxDev
+-- Schema boxDevTest
 -- -----------------------------------------------------
 
-CREATE DATABASE IF NOT EXISTS `boxDev` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `boxDev`;
+CREATE DATABASE IF NOT EXISTS `boxDevTest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `boxDevTest`;
 
 -- -----------------------------------------------------
 -- Table `fileType`
@@ -69,10 +69,10 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE EVENT `file_event_delete_old_files` ON SCHEDULE EVERY 7 DAY STARTS CURRENT_TIMESTAMP()
+CREATE EVENT `file_event_delete_old_files` ON SCHEDULE EVERY 1 HOUR STARTS CURRENT_TIMESTAMP()
   ON COMPLETION NOT PRESERVE
 DO BEGIN
-  DELETE FROM `file` WHERE `deletedAt` < DATE_SUB(NOW(), INTERVAL 7 DAY);
+  DELETE FROM `file` WHERE `deletedAt` < DATE_SUB(NOW(), INTERVAL 1 HOUR);
 END; //
 
 DELIMITER ;
@@ -83,3 +83,10 @@ DELIMITER ;
 
 INSERT INTO `fileType` (`name`) 
   VALUES ('image/jpeg'), ('image/png'), ('audio/mpeg'), ('video/mpeg'), ('video/mp4'), ('video/webm');
+
+-- -----------------------------------------------------
+-- Data for table `file`
+-- -----------------------------------------------------
+
+INSERT INTO `file` (`name`, `size`, `idFileType`) 
+  VALUES ('testImage.jpg', 0.4, 1);

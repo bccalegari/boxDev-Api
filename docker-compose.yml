@@ -18,7 +18,27 @@ services:
         aliases:
             - db
     volumes:
+      - database:/var/lib/mysql
       - ./database/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  testdb:
+    image: mysql:8.0
+    container_name: boxdev_test_db
+    env_file: ./.env
+    expose: [3305]
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=boxDevTest
+      - MYSQL_TCP_PORT=3305
+    ports:
+      - "$TEST_DB_LOCAL_PORT:3305" 
+    networks:
+      boxDev_network:
+        aliases:
+            - testdb
+    volumes:
+      - test_database:/var/lib/mysql
+      - ./database/test/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
       
   app:
     build: ./api
@@ -30,12 +50,18 @@ services:
     env_file: ./.env
     expose: [8000]
     environment:
+      - APP_ENV=$APP_ENV
       - PORT=8000
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=boxDev
       - DB_PORT=3306
+      - TEST_DB_HOST=testdb
+      - TEST_DB_USER=root
+      - TEST_DB_PASSWORD=root
+      - TEST_DB_NAME=boxDevTest
+      - TEST_DB_PORT=3305
     ports:
       - "$APP_LOCAL_PORT:8000" 
     networks:
@@ -47,6 +73,8 @@ services:
     depends_on:
       db:
         condition: service_started
+      testdb:
+        condition: service_started
 
 networks:
   boxDev_network:
@@ -54,5 +82,7 @@ networks:
     driver: bridge
 
 volumes: 
-  db:
+  database:
     name: boxDev_database
+  test_database:
+    name: boxDevTest_database
