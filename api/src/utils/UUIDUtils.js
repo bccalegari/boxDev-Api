@@ -1,6 +1,7 @@
 /**
  * UUID Utils
  * 
+ * UUID utilities
  * @category Utils
  */
 class UUIDUtils {

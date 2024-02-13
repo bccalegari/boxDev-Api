@@ -51,7 +51,7 @@ services:
     expose: [8000]
     environment:
       - APP_ENV=$APP_ENV
-      - PORT=8000
+      - DOCKER_PORT=8000
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=root
