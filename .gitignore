@@ -1,3 +1,6 @@
 .env
 api/node_modules
 api/logs/*.log
+api/uploads/temp/audios/*.*
+api/uploads/temp/images/*.*
+api/uploads/temp/videos/*.*
