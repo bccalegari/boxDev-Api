@@ -25,6 +25,4 @@ class UUIDUtils {
 
 }
 
-
-
 module.exports = UUIDUtils;
