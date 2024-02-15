@@ -4,18 +4,129 @@
         "title": "boxDev-Api",
         "description": "File Management REST API <br><br> Repository: [bccalegari/boxDev-Api](https://github.com/bccalegari/boxDev-Api) <br>",
         "contact": {
-            "email": "brunocostacallegari@gmail.com"
+            "email": "brunocostacallegari@outlook.com",
+            "name": "Bruno Calegari"
         },
         "license": {
             "name": "MIT",
             "url": "https://github.com/bccalegari/boxDev-Api/blob/main/LICENSE.md"
         },
         "version": "1.0.0"
+
     },
+    "tags": [
+        {
+            "name": "Files",
+            "description": "File Management"
+        }
+    ],
     "servers": [
         {
-            "url": "https://localhost:8080/v1",
-            "description": ""
+            "url": "http://localhost:8080/v1"
+            
         }
-    ]
+    ],
+    "paths": {
+        "/files": {
+            "post": {
+                "tags": [
+                    "Files"
+                ],
+                "summary": "Upload a file",
+                "operationId": "uploadFile",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "File": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "number"
+                    },
+                    "fileType": {
+                        "type": "string",
+                        "enum": [
+                            "image/jpeg",
+                            "image/png",
+                            "audio/mpeg",
+                            "video/mpeg",
+                            "video/mp4",
+                            "video/webm"
+                        ]
+                    },
+                    "externalId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "key": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
 }
