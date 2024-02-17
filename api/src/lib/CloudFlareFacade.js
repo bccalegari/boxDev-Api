@@ -33,7 +33,7 @@ class CloudFlareFacade {
 	 * @param { Number } expiresIn - seconds until the signed URL expires (default: 30 minutes)
 	 * @returns { Promise<String> } - the signed URL
 	 */
-	static async #getFileSignedUrl(fileKey, expiresIn = 3600 / 2) {
+	static async getFileSignedUrl(fileKey, expiresIn = 3600 / 2) {
 
 		const params = {
 			Bucket: process.env.CLOUDFLARE_BUCKET,
@@ -63,7 +63,7 @@ class CloudFlareFacade {
 
 		await this.#R2.send(new PutObjectCommand(params));
 
-		return await this.#getFileSignedUrl(fileKey);
+		return await this.getFileSignedUrl(fileKey);
 
 	}
 

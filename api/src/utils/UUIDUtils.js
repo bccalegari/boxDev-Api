@@ -7,21 +7,22 @@
 class UUIDUtils {
 
 	/**
-	 * Convert a buffer to a string UUID
+	 * Get a UUID string from a binary UUID
 	 * 
-	 * @param { Buffer } buffer
-	 * @returns { String } string UUID
+	 * @returns { String } UUID
 	 */
-	static getStringUUID(buffer) {
+	static getUUIDBinary(binary) {
+		return binary.toString('hex').replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
+	}
 
-		return [
-			buffer.toString('hex', 4, 8),
-			buffer.toString('hex', 2, 4),
-			buffer.toString('hex', 0, 2),
-			buffer.toString('hex', 8, 10),
-			buffer.toString('hex', 10, 16),
-		].join('-');
-
+	/**
+	 * Get a binary UUID from a UUID string
+	 * 
+	 * @param { String } string
+	 * @returns { Buffer } binary UUID
+	 */
+	static getBinaryUUID(string) {
+		return Buffer.from(string.replace(/-/g, ''), 'hex');
 	}
 
 }

@@ -1,7 +1,7 @@
 /**
- * File Request DTO
+ * File Create Request DTO
  * 
- * Represents a created file data to be used for request
+ * Represents a created file data to be used in create requests
  * @category DTOs
  */
 class FileCreateRequestDTO {

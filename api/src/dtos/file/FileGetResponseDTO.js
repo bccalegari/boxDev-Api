@@ -1,10 +1,10 @@
 /**
- * File Create Response DTO
+ * File Get Response DTO
  * 
- * Represents a created file data to be used in create responses
+ * Represents a created file data to be used in get responses
  * @category DTOs
  */
-class FileCreateResponseDTO {
+class FileGetResponseDTO {
 
 	/**
      * File name
@@ -57,6 +57,13 @@ class FileCreateResponseDTO {
 	createdAt;
 
 	/**
+      * File update date
+      * 
+      * @type { Date }
+      */
+	updateAt;
+
+	/**
      * File Create Response DTO Constructor
      * @param { String } name file name
      * @param { Number } size file size
@@ -65,8 +72,9 @@ class FileCreateResponseDTO {
      * @param { String } key file key
      * @param { String } url file url
      * @param { Date } createdAt file creation date
+     * @param { Date } updatedAt file update date
      */
-	constructor(name, size, fileType, externalId, key, url, createdAt) {
+	constructor(name, size, fileType, externalId, key, url, createdAt, updatedAt) {
 		this.name = name;
 		this.size = size;
 		this.fileType = fileType;
@@ -74,8 +82,9 @@ class FileCreateResponseDTO {
 		this.key = key;
 		this.url = url;
 		this.createdAt = createdAt;
+		this.updateAt = updatedAt;
 	}
 
 }
 
-module.exports = FileCreateResponseDTO;
+module.exports = FileGetResponseDTO;

@@ -6,6 +6,7 @@ const multerErrorHandlerMiddleware = require('../middlewares/multerErrorHandlerM
 const router = Router();
 
 router
-	.post('/file', MulterFacade.getImageUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.createFile);
+	.get('/files/:id', FileController.getFile)
+	.post('/files', MulterFacade.getImageUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.createFile);
 
 module.exports = router;

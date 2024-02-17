@@ -26,6 +26,15 @@ class FileRepository extends AbstractRepository {
 	}
 
 	/**
+	 * Find file by external id
+	 * @param { String } externalId file external id
+	 * @returns { Promise<Model<File>> } file model
+	 */
+	async findFileByExternalId(externalId) {
+		return await super._getOneEagerElement({ externalId }, [ 'fileType' ]);
+	}
+
+	/**
      * Create file
      * @param { Object } file file object
      * @returns { Promise<Model<File>> } file model
