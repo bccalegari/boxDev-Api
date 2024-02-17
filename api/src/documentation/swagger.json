@@ -113,6 +113,10 @@
                     "key": {
                         "type": "string"
                     },
+                    "url": {
+                        "type": "string",
+                        "description": "Expires in 30 minutes"
+                    },
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"

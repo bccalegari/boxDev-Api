@@ -25,15 +25,16 @@ class FileDTOFactory {
 	/**
 	 * Create an new file DTO to use data in response
 	 * @param { Model<File> } fileModel File model
+	 * @param { String } fileUrl File URL
 	 * @returns { FileResponseDTO } FileResponseDTO
 	 */
-	createFileResponseDTO(fileModel) {
+	createFileResponseDTO(fileModel, fileUrl) {
 		
 		const { name, size, externalId, key, createdAt } = fileModel;
 
 		const fileType = fileModel.fileType.name;
 
-		const createdFileResponseDTO = new FileCreateResponseDTO(name, size, fileType, externalId, key, createdAt);
+		const createdFileResponseDTO = new FileCreateResponseDTO(name, size, fileType, externalId, key, fileUrl, createdAt);
 
 		return createdFileResponseDTO;
 	

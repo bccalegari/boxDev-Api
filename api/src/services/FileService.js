@@ -3,6 +3,7 @@ const ApiError = require('../errors/ApiError');
 const FileRepository = require('../repositories/FileRepository');
 const FileTypeRepository = require('../repositories/FileTypeRepository');
 const { logger } = require('../utils/logger');
+const CloudFlareFacade = require('../lib/CloudFlareFacade');
 
 /**
  * File Service Class
@@ -65,7 +66,11 @@ class FileService {
 		
 			const newFileId = (await this.#fileRepository.createFile(fileRequestDTO)).idFile;
 
-			const fileResponseDTO = this.#fileDTOFactory.createFileResponseDTO(await this.#fileRepository.findFileById(newFileId));
+			const newFileModel = await this.#fileRepository.findFileById(newFileId);
+
+			const fileSignedUrl = await CloudFlareFacade.uploadFile(file, newFileModel.key, file.path);
+
+			const fileResponseDTO = this.#fileDTOFactory.createFileResponseDTO(newFileModel, fileSignedUrl);
 
 			return fileResponseDTO;
                
