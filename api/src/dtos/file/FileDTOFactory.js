@@ -26,7 +26,7 @@ class FileDTOFactory {
 
 			const { name, size, externalId, key, createdAt, fileType, updatedAt } = file;
 
-			responseDTO.push(new FileGetAllResponseDTO(name, size, fileType.name, externalId, key, null, createdAt, updatedAt));
+			responseDTO.push(new FileGetAllResponseDTO(name, size, fileType.name, externalId, key, createdAt, updatedAt));
 
 		}
 
