@@ -2,6 +2,8 @@
 const FileCreateRequestDTO = require('./FileCreateRequestDTO');
 const FileCreateResponseDTO = require('./FileCreateResponseDTO');
 const FileGetResponseDTO = require('./FileGetResponseDTO');
+const FileGetAllRequestDTO = require('./FileGetAllRequestDTO');
+const FileGetAllResponseDTO = require('./FileGetAllResponseDTO');
 
 /**
  * File DTO Factory Class
@@ -10,6 +12,42 @@ const FileGetResponseDTO = require('./FileGetResponseDTO');
  * @category DTOs
  */
 class FileDTOFactory {
+
+	/**
+	 * Create an new file DTO to use data in get all response
+	 * @param { Model<File[]> } files File models
+	 * @returns { Array<FileGetAllResponseDTO> } FileGetResponseDTO
+	 */
+	createFileGetAllResponseDTO(files) {
+
+		const responseDTO = [];
+		
+		for (const file of files) {
+
+			const { name, size, externalId, key, createdAt, fileType, updatedAt } = file;
+
+			responseDTO.push(new FileGetAllResponseDTO(name, size, fileType.name, externalId, key, null, createdAt, updatedAt));
+
+		}
+
+		return responseDTO;
+
+	}
+
+	/**
+	 * Create an new file DTO to use data in get all request
+	 * @param { Object } query Query object
+	 * @returns { FileGetAllRequestDTO } FileGetAllRequestDTO
+	 */
+	createFileGetAllRequestDTO(query) {
+
+		const { name, size, fileType } = query;
+
+		const createdFileRequestDTO = new FileGetAllRequestDTO(name, size, fileType);
+
+		return createdFileRequestDTO;
+
+	}
 
 	/**
 	 * Create an new file DTO to use data in creation request

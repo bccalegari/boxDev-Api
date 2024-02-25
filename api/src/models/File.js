@@ -87,14 +87,29 @@ module.exports = (sequelize, DataTypes) => {
 		sequelize,
 		hooks: {
 			beforeFind: (file) => {
+
 				if (file.where.externalId) {
 					file.where.externalId = UUIDUtils.getBinaryUUID(file.where.externalId);
 
 				}
+				
 			},
 			afterFind: (file) => {
-				if (file != null) 
-					file.externalId = UUIDUtils.getUUIDBinary(file.externalId);
+
+				if (Array.isArray(file)) {
+
+					file.forEach(f => {
+						if (f != null) 
+							f.externalId = UUIDUtils.getUUIDBinary(f.externalId);
+					});
+
+				} else {
+
+					if (file != null) 
+						file.externalId = UUIDUtils.getUUIDBinary(file.externalId);
+
+				}
+
 			},
 		},
 		timestamps: true,

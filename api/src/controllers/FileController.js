@@ -32,6 +32,29 @@ class FileController {
 	}
 
 	/**
+	 * Get all files
+	 * @param { Promise<Request> } req request
+	 * @param { Promise<Response> } res response
+	 */
+	static async getAllFiles(req, res) {
+		
+		try {
+
+			const fileService = new FileService();
+
+			const files = await fileService.getAllFiles(req.query);
+
+			res.status(200).send({ files });
+
+		} catch (error) {
+
+			res.status(error.code).send({ message: error.message });
+
+		}
+
+	}
+
+	/**
 	 * Create a new file
 	 * @param { Promise<Request> } req request
 	 * @param { Promise<Response> } res response

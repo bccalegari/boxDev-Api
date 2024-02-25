@@ -27,6 +27,16 @@ class AbstractRepository {
 	}
 
 	/**
+	 * Get database model
+	 * @protected protected method
+	 * @param { String } model name of the model
+	 * @returns { Model } sequelize model
+	 */
+	_getDatabaseModel(model) {
+		return this.#db[model];
+	}
+
+	/**
      * Get one element (Lazy Loading)
 	 * @protected protected method
      * @param { Object } where where clause 
@@ -59,6 +69,29 @@ class AbstractRepository {
 		}
 
 		return await this.#db[this.model].findOne({ where: { ...where }, include: [ ...includes ], ...options });
+	}
+
+	/**
+	 * Get all elements paginated (Eager Loading)
+	 * @protected protected method
+	 * @param { Object } where where clause
+	 * @param { Object|String } includes join clause
+	 * @param { Number } page page number
+	 * @param { Number } limit limit of elements per page
+	 * @param { Array<String> } attributes columns to select
+	 * @param { Object } options query options
+	 * @returns { Promise<Model[]> }
+	 */
+	async _getAllEagerElementsPaginated(where = {}, includes = [], page = 1, limit = 10, attributes=[], options={}) {
+		
+		const offset = (page - 1) * limit;
+
+		if (!(attributes.length === 0)) {
+			return await this.#db[this.model].findAll({ where: { ...where }, include: [ ...includes ], attributes: [ ...attributes ], limit, offset, ...options });
+		}
+
+		return await this.#db[this.model].findAll({ where: { ...where }, include: [ ...includes ], limit, offset, ...options });
+
 	}
 
 	/**

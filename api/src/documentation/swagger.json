@@ -90,6 +90,81 @@
             }
         },
         "/files": {
+            "get" : {
+                "tags": [
+                    "Files"
+                ],
+                "summary": "Get all files",
+                "description": "Returns all files metadata",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "fileType",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "image/jpeg",
+                                "image/png",
+                                "audio/mpeg",
+                                "video/mpeg",
+                                "video/mp4",
+                                "video/webm"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Files"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Files"
@@ -188,6 +263,48 @@
                         "format": "date-time",
                         "description": "Only shows in get and put requests",
                         "required": false
+                    }
+                }
+            },
+            "Files": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "size": {
+                            "type": "number"
+                        },
+                        "fileType": {
+                            "type": "string",
+                            "enum": [
+                                "image/jpeg",
+                                "image/png",
+                                "audio/mpeg",
+                                "video/mpeg",
+                                "video/mp4",
+                                "video/webm"
+                            ]
+                        },
+                        "externalId": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Only shows in get and put requests",
+                            "required": false
+                        }
                     }
                 }
             },

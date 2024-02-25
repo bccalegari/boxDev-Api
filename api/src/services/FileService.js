@@ -49,6 +49,35 @@ class FileService {
 	}
 
 	/**
+	 * Get All Files
+	 * @param { Object } query - Query object
+	 * @returns { Array<FileGetAllResponseDTO> } - File Get All Response DTO
+	 * @throws { ApiError<500> } - If an error occurs
+	 */
+	async getAllFiles(query) {
+
+		const page = query.page ? query.page : 1;
+
+		try {
+
+			const fileRequestDTO = this.#fileDTOFactory.createFileGetAllRequestDTO(query);
+
+			const files = await this.#fileRepository.findAllFiles(fileRequestDTO, page);
+
+			const filesResponseDTO = this.#fileDTOFactory.createFileGetAllResponseDTO(files);
+
+			return filesResponseDTO;
+
+		} catch (error) {
+
+			logger.error(error);
+			ApiError.handleError(error);
+
+		}
+
+	}
+
+	/**
 	 * Get File
 	 * 
 	 * Gets a file by its external id and returns a file response DTO with a signed url to download the file
