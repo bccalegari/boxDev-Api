@@ -100,6 +100,29 @@ class FileController {
 
 	}
 
+	/**
+	 * Delete a file
+	 * @param { Promise<Request> } req request
+	 * @param { Promise<Response> } res response
+	 */
+	static async deleteFile(req, res) {
+
+		try {
+
+			const fileService = new FileService();
+
+			await fileService.deleteFile(req.params.id);
+
+			res.status(204).send();
+
+		} catch (error) {
+
+			res.status(error.code).send({ message: error.message });
+
+		}
+
+	}
+
 }
 
 module.exports = FileController;

@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const fs = require('fs');
 
@@ -64,6 +64,22 @@ class CloudFlareFacade {
 		await this.#R2.send(new PutObjectCommand(params));
 
 		return await this.getFileSignedUrl(fileKey);
+
+	}
+
+	/**
+	 * Delete a file from the CloudFlare bucket
+	 * 
+	 * @param { String } fileKey - the key of the file to delete
+	 */
+	static async deleteFile(fileKey) {
+
+		const params = {
+			Bucket: process.env.CLOUDFLARE_BUCKET,
+			Key: fileKey
+		};
+
+		await this.#R2.send(new DeleteObjectCommand(params));
 
 	}
 

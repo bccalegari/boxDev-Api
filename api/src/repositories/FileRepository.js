@@ -83,6 +83,17 @@ class FileRepository extends AbstractRepository {
 		);
 	}
 
+	/**
+	 * Delete file
+	 * @param { String } externalId file external id
+	 */
+	async deleteFile(externalId) {
+		externalId = UUIDUtils.getBinaryUUID(externalId);
+		return await super._rawQuery('UPDATE file SET deletedAt = NOW() WHERE externalId = ?', 
+			{ replacements: [ externalId ], type: super._getQueryType('UPDATE') }
+		);
+	}
+
 }
 
 module.exports = FileRepository;

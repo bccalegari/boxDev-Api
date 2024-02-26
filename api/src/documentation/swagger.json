@@ -18,6 +18,18 @@
         {
             "name": "Files",
             "description": "File Management"
+        },
+        {
+            "name": "Images",
+            "description": "Image Management"
+        },
+        {
+            "name": "Videos",
+            "description": "Video Management"
+        },
+        {
+            "name": "Audios",
+            "description": "Audio Management"
         }
     ],
     "servers": [
@@ -88,12 +100,209 @@
                     }
                 }
             },
-            "put": {
+            "delete": {
                 "tags": [
                     "Files"
                 ],
-                "summary": "Update a file by id",
-                "description": "Overwrites a file and(or) updates its metadata by its id (only name and size can be updated, url is temporary and key is unique and cannot be updated) and returns its metadata and temporary url (expires in 30 minutes)",
+                "summary": "Delete a file by id",
+                "description": "Deletes a file by its id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/images/:id": {
+            "put": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Update a image by id",
+                "description": "Overwrites a image and(or) updates its metadata by its id (only name and size can be updated, url is temporary and key is unique and cannot be updated) and returns its metadata and temporary url (expires in 30 minutes)",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/File"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/videos/:id": {
+            "put": {
+                "tags": [
+                    "Videos"
+                ],
+                "summary": "Update a video by id",
+                "description": "Overwrites a video and(or) updates its metadata by its id (only name and size can be updated, url is temporary and key is unique and cannot be updated) and returns its metadata and temporary url (expires in 30 minutes)",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/File"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/audios/:id": {
+            "put": {
+                "tags": [
+                    "Audios"
+                ],
+                "summary": "Update a audio by id",
+                "description": "Overwrites a audio and(or) updates its metadata by its id (only name and size can be updated, url is temporary and key is unique and cannot be updated) and returns its metadata and temporary url (expires in 30 minutes)",
                 "parameters": [
                     {
                         "name": "id",
@@ -233,13 +442,127 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/images": {
             "post": {
                 "tags": [
-                    "Files"
+                    "Images"
                 ],
-                "summary": "Upload a file",
-                "description": "Upload a file and returns its metadata and temporary url (expires in 30 minutes)",
+                "summary": "Upload image",
+                "description": "Uploads a image and returns its metadata and temporary url (expires in 30 minutes)",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/videos": {
+            "post": {
+                "tags": [
+                    "Videos"
+                ],
+                "summary": "Upload video",
+                "description": "Uploads a video and returns its metadata and temporary url (expires in 30 minutes)",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/audios": {
+            "post": {
+                "tags": [
+                    "Audios"
+                ],
+                "summary": "Upload audio",
+                "description": "Uploads a audio and returns its metadata and temporary url (expires in 30 minutes)",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {

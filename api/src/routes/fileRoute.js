@@ -8,7 +8,12 @@ const router = Router();
 router
 	.get('/files', FileController.getAllFiles)
 	.get('/files/:id', FileController.getFile)
-	.post('/files', MulterFacade.getImageUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.createFile)
-	.put('/files/:id', MulterFacade.getImageUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.updateFile);
+	.post('/images', MulterFacade.getImageUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.createFile)
+	.put('/images/:id', MulterFacade.getImageUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.updateFile)
+	.post('/videos', MulterFacade.getVideoUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.createFile)
+	.put('/videos/:id', MulterFacade.getVideoUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.updateFile)
+	.post('/audios', MulterFacade.getAudioUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.createFile)
+	.put('/audios/:id', MulterFacade.getAudioUploadMiddleware().single('file'), multerErrorHandlerMiddleware(), FileController.updateFile)
+	.delete('/files/:id', FileController.deleteFile);
 
 module.exports = router;

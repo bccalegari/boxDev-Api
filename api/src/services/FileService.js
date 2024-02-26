@@ -201,6 +201,40 @@ class FileService {
 
 	}
 
+	/**
+	 * Delete File
+	 * 
+	 * Deletes a file from the database and cloud storage
+	 * @param { String } fileId - File external id
+	 * @throws { ApiError<500> | ApiError<404> | ApiError<400> } - If an error occurs or if the file is not found or if the file id is not provided
+	 */
+	async deleteFile(fileId) {
+
+		try {
+
+			if (!fileId) {
+				throw ApiError.badRequest('File id is required');
+			}
+
+			const fileModel = await this.#fileRepository.findFileByExternalId(fileId);
+
+			if (!fileModel) {
+				throw ApiError.notFound('File not found');
+			}
+
+			await CloudFlareFacade.deleteFile(fileModel.key);
+
+			await this.#fileRepository.deleteFile(fileModel.externalId);
+
+		} catch (error) {
+
+			logger.error(error);
+			ApiError.handleError(error);
+
+		}
+
+	}
+
 }
 
 module.exports = FileService;
