@@ -27,6 +27,29 @@ class AbstractRepository {
 	}
 
 	/**
+	 * Execute a raw query
+	 * @protected protected method
+	 * @param { String } query query to execute
+	 * @param { Object } params query parameters
+	 * @return { Promise<Model[]> | Promise<any> } result of the query
+	 * @throws { Error } If query is empty or wrong
+	 */
+	async _rawQuery(query, params = {}) {
+		return await database.sequelize.query(query, { ...params });
+	}
+
+	/**
+	 * Get query type
+	 * @protected protected method
+	 * @param { String } type type of the query
+	 * @returns { Promise<QueryType> } sequelize query type
+	 * @throws { Error } If type is empty or wrong
+	 */
+	async _getQueryType(type) {
+		return await database.sequelize.QueryTypes[type];
+	}
+
+	/**
 	 * Get database model
 	 * @protected protected method
 	 * @param { String } model name of the model

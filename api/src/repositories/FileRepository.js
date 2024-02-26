@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 const AbstractRepository = require('./AbstractRepository');
+const UUIDUtils = require('../utils/UUIDUtils');
 
 /**
  * File Repository Class
@@ -35,7 +36,7 @@ class FileRepository extends AbstractRepository {
 
 		if (size) where.size = parseFloat(size.trim());
 
-		if (fileType) fileTypeInclude = { model: this._getDatabaseModel('fileType'), required: false, 
+		if (fileType) fileTypeInclude = { model: super._getDatabaseModel('fileType'), required: false, 
 			where : { name: { [Op.like]: `%${ fileType.trim() }%` } } };
 
 
@@ -68,6 +69,18 @@ class FileRepository extends AbstractRepository {
      */
 	async createFile(file) {
 		return await super._insertElement(file);
+	}
+
+	/**
+	 * Update file
+	 * @param { Object } file file object
+	 * @param { String } externalId file external id
+	 */
+	async updateFile(file, externalId) {
+		externalId = UUIDUtils.getBinaryUUID(externalId);
+		return await super._rawQuery('UPDATE file SET name = ?, size = ?, idFileType = ? WHERE deletedAt IS NULL AND externalId = ?', 
+			{ replacements: [ file.name, file.size, file.idFileType, externalId ], type: super._getQueryType('UPDATE') }
+		);
 	}
 
 }

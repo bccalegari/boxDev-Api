@@ -109,8 +109,7 @@ module.exports = (sequelize, DataTypes) => {
 						file.externalId = UUIDUtils.getUUIDBinary(file.externalId);
 
 				}
-
-			},
+			}
 		},
 		timestamps: true,
 		paranoid: true,

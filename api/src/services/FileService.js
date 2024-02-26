@@ -90,16 +90,16 @@ class FileService {
 		try {
 
 			if (!fileExternalId) {
-				throw ApiError.badRequest();
+				throw ApiError.badRequest('File id is required');
 			}
 
 			const fileModel = await this.#fileRepository.findFileByExternalId(fileExternalId);
 
 			if (!fileModel) {
-				throw ApiError.notFound();
+				throw ApiError.notFound('File not found');
 			}
 
-			const fileUrl = await CloudFlareFacade.getFileSignedUrl(fileModel.key, 3600);
+			const fileUrl = await CloudFlareFacade.getFileSignedUrl(fileModel.key, 3600); // 1 hour
 
 			const fileResponseDTO = this.#fileDTOFactory.createFileGetResponseDTO(fileModel, fileUrl);
 
@@ -127,7 +127,7 @@ class FileService {
 		try {
 
 			if (!file) {
-				throw ApiError.badRequest();
+				throw ApiError.badRequest('File is required');
 			}
 
 			const fileType = await this.#fileTypeRepository.findFileTypeByName(file.mimetype);
@@ -149,6 +149,54 @@ class FileService {
 			logger.error(error);
 			ApiError.handleError(error);
                
+		}
+
+	}
+
+	/**
+	 * Update File
+	 * 
+	 * Updates a file in the database and cloud storage
+	 * @param { String } fileId - File external id
+	 * @param { Object } file - File object
+	 * @returns { FileResponseDTO } - File Response DTO
+	 * @throws { ApiError<500> | ApiError<404> | ApiError<400> } - If an error occurs or if the file is not found or if the file id is not provided
+	 */
+	async updateFile(fileId, file) {
+
+		try {
+
+			if (!fileId || !file) {
+				throw ApiError.badRequest('File id and file are required');
+			}
+
+			const fileModel = await this.#fileRepository.findFileByExternalId(fileId);
+
+			if (!fileModel) {
+				throw ApiError.notFound('File not found');
+			}
+
+			if (fileModel.fileType.name !== file.mimetype) {
+				throw ApiError.badRequest('File type cannot be changed');
+			}
+
+			const fileRequestDTO = this.#fileDTOFactory.createFileCreateRequestDTO(file, fileModel.fileType);
+
+			await this.#fileRepository.updateFile(fileRequestDTO, fileId);
+
+			const updatedFileModel = await this.#fileRepository.findFileByExternalId(fileId);
+
+			const fileSignedUrl = await CloudFlareFacade.uploadFile(file, updatedFileModel.key, file.path);
+
+			const fileResponseDTO = this.#fileDTOFactory.createFileUpdateResponseDTO(updatedFileModel, fileSignedUrl);
+
+			return fileResponseDTO;
+
+		} catch (error) {
+
+			logger.error(error);
+			ApiError.handleError(error);
+
 		}
 
 	}

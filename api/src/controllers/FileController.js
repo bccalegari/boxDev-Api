@@ -77,6 +77,29 @@ class FileController {
 
 	}
 
+	/**
+	 * Update a file
+	 * @param { Promise<Request> } req request
+	 * @param { Promise<Response> } res response
+	 */
+	static async updateFile(req, res) {
+
+		try {
+
+			const fileService = new FileService();
+
+			const file = await fileService.updateFile(req.params.id, req.file);
+
+			res.status(200).send({ file });
+
+		} catch (error) {
+
+			res.status(error.code).send({ message: error.message });
+
+		}
+
+	}
+
 }
 
 module.exports = FileController;

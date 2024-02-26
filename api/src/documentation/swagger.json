@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "boxDev-Api",
-        "description": "File Management REST API <br><br> Repository: [bccalegari/boxDev-Api](https://github.com/bccalegari/boxDev-Api) <br>",
+        "description": "File Management REST API - Cloudflare <br><br> Repository: [bccalegari/boxDev-Api](https://github.com/bccalegari/boxDev-Api) <br>",
         "contact": {
             "email": "brunocostacallegari@outlook.com",
             "name": "Bruno Calegari"
@@ -27,7 +27,7 @@
         }
     ],
     "paths": {
-        "/files:id": {
+        "/files/:id": {
             "get": {
                 "tags": [
                     "Files"
@@ -45,6 +45,75 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Files"
+                ],
+                "summary": "Update a file by id",
+                "description": "Overwrites a file and(or) updates its metadata by its id (only name and size can be updated, url is temporary and key is unique and cannot be updated) and returns its metadata and temporary url (expires in 30 minutes)",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/File"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK",

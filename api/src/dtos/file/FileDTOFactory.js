@@ -4,6 +4,7 @@ const FileCreateResponseDTO = require('./FileCreateResponseDTO');
 const FileGetResponseDTO = require('./FileGetResponseDTO');
 const FileGetAllRequestDTO = require('./FileGetAllRequestDTO');
 const FileGetAllResponseDTO = require('./FileGetAllResponseDTO');
+const FileUpdateResponseDTO = require('./FileUpdateResponseDTO');
 
 /**
  * File DTO Factory Class
@@ -57,7 +58,13 @@ class FileDTOFactory {
 	 */
 	createFileCreateRequestDTO(file, fileTypeModel) {
 
-		const { originalname, size } = file;
+		const regexPattern = /[^a-zA-Z0-9\s]/g;
+
+		let { originalname } = file;
+
+		originalname = originalname.replace(regexPattern, '');
+
+		const { size } = file;
 		
 		const { idFileType } = fileTypeModel;
 
@@ -83,6 +90,24 @@ class FileDTOFactory {
 
 		return createdFileResponseDTO;
 	
+	}
+
+	/**
+	 * Create an new file DTO to use data in update response
+	 * @param { Model<File> } fileModel File model
+	 * @param { String } fileUrl File URL
+	 * @returns { FileUpdateResponseDTO } FileResponseDTO
+	 */
+	createFileUpdateResponseDTO(fileModel, fileUrl) {
+
+		const { name, size, externalId, key, createdAt, updatedAt } = fileModel;
+
+		const fileType = fileModel.fileType.name;
+
+		const createdFileResponseDTO = new FileUpdateResponseDTO(name, size, fileType, externalId, key, fileUrl, createdAt, updatedAt);
+
+		return createdFileResponseDTO;
+
 	}
 
 	/**
